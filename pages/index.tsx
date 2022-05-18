@@ -2,8 +2,9 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Header from '../components/Header'
 import Hero from '../components/Hero'
-import { sanityClient, urlFor } from '../sanity'
+import { sanityClient } from '../sanity'
 import { Post } from '../typings'
+import PostsComp from '../components/posts'
 interface Props {
   posts: [Post]
 }
@@ -15,11 +16,13 @@ const Home: NextPage<Props> = ({ posts }: Props) => {
         <title>Medium Clone </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/*hero section */}
       <Header />
-      {/*posts section */}
 
+      {/*hero section */}
       <Hero />
+
+      {/*posts section */}
+      <PostsComp posts={posts} />
     </div>
   )
 }
