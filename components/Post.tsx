@@ -10,19 +10,22 @@ type Props = {
 
 function PostComp({ post }: Props) {
   return (
-    <Link key={post._id} href={`/posts/${post.slug.current}`}>
-      <div>
-        <Image
-          src={urlFor(post.mainImage).url()!}
-          layout="fill"
-          objectFit="contain"
-          priority
-        ></Image>
+    <Link href={`/posts/${post.slug.current}`}>
+      <div className="group rounded-lg border hover:cursor-pointer">
+        <div className="relative h-60 w-full">
+          <Image
+            className=" w-full  transition-transform duration-200 ease-in-out group-hover:scale-105 "
+            src={urlFor(post.mainImage).url()!}
+            objectFit="cover"
+            layout="fill"
+          />
+        </div>
+
         <div className="flex justify-between bg-white p-5">
           <div>
-            <p>{post.title}</p>
-            <p>
-              Created at {post._createdAt} By {post.author.name}
+            <p className="text-lg font-bold">{post.title}</p>
+            <p className="text-xs text-gray-600">
+              Published By {post.author.name}
             </p>
           </div>
           <img
