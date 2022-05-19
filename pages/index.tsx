@@ -4,7 +4,7 @@ import Header from '../components/Header'
 import Hero from '../components/Hero'
 import { sanityClient } from '../sanity'
 import { Post } from '../typings'
-import PostsComp from '../components/posts'
+import PostsComp from '../components/Posts'
 interface Props {
   posts: [Post]
 }
