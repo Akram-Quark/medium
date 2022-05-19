@@ -4,13 +4,13 @@ import Header from '../components/Header'
 import Hero from '../components/Hero'
 import { sanityClient } from '../sanity'
 import { Post } from '../typings'
-import PostsComp from '../components/posts'
+import PostsComp from '../components/Posts'
 interface Props {
   posts: [Post]
 }
 const Home: NextPage<Props> = ({ posts }: Props) => {
   return (
-    <div className="mx-auto max-w-7xl">
+    <div className="xs:w-full mx-auto max-w-7xl">
       <Head>
         <title>Medium Clone </title>
         <link rel="icon" href="/favicon.ico" />
