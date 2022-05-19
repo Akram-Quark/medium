@@ -4,6 +4,8 @@ import { sanityClient, urlFor } from '../../sanity'
 import { Post } from '../../typings'
 import PortableText from 'react-portable-text'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import { useState } from 'react'
+import Comments from '../../components/Comments'
 interface Props {
   post: Post
 }
@@ -15,6 +17,8 @@ interface FormInput {
 }
 
 function post({ post }: Props) {
+  console.log(post)
+  const [submitted, setSubmitted] = useState<boolean>(false)
   const {
     register,
     handleSubmit,
@@ -25,8 +29,14 @@ function post({ post }: Props) {
       method: 'POST',
       body: JSON.stringify(data),
     })
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err))
+      .then(() => {
+        console.log(data)
+        setSubmitted(true)
+      })
+      .catch((err) => {
+        console.log(err)
+        setSubmitted(false)
+      })
   }
   return (
     <main>
@@ -79,61 +89,72 @@ function post({ post }: Props) {
           {' '}
           Dont hesitate to leave a comment
         </h1>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="my-10 mx-auto mb-10 flex max-w-2xl flex-col p-5"
-        >
-          <input type="hidden" value={post._id} {...register('_id')} />
-          <label className="mb-5 block">
-            <span className="text-gray-700">Name</span>
-            <input
-              {...register('name', { required: true })}
-              className="form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-blue-500 focus:ring"
-              type="text"
-              name="name"
-              placeholder="jhon doe"
-            />
-          </label>
-          <label className="mb-5 block">
-            <span className="text-gray-700">Email</span>
-            <input
-              {...register('email', { required: true })}
-              className="form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-blue-500 focus:ring"
-              type="email"
-              name="email"
-              placeholder="jhon_doe@maile.com"
-            />
-          </label>
-          <label className="mb-5 block">
-            <span className="text-gray-700">Comment</span>
-            <textarea
-              {...register('comment', { required: true })}
-              placeholder="Say something please ... "
-              rows={8}
-              name="comment"
-              className="form-textarea mt-1 block w-full border py-2 px-3 shadow outline-none ring-blue-500 focus:ring"
-            />
-          </label>
-          <div className="my-2 flex flex-col">
-            {errors.name && (
-              <span className="text-red-500">The name field is required</span>
-            )}
-            {errors.email && (
-              <span className="text-red-500">The email field is required</span>
-            )}
-            {errors.comment && (
-              <span className="text-red-500">
-                The comment field is required
-              </span>
-            )}
+        {submitted ? (
+          <div className="my-10 mx-auto flex max-w-2xl flex-col bg-blue-500 p-10 text-white">
+            <h3 className="text-3xl font-bold ">Thank you for the comment</h3>
+            <p>Once it's been approved,it will appear bellow !!</p>
           </div>
-          <button
-            type="submit"
-            className="cursor-pointer rounded bg-blue-700 py-2 font-bold text-white shadow outline-none hover:bg-gray-200 hover:text-blue-700"
+        ) : (
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="my-10 mx-auto mb-10 flex max-w-2xl flex-col p-5"
           >
-            Submit
-          </button>
-        </form>
+            <input type="hidden" value={post._id} {...register('_id')} />
+            <label className="mb-5 block">
+              <span className="text-gray-700">Name</span>
+              <input
+                {...register('name', { required: true })}
+                className="form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-blue-500 focus:ring"
+                type="text"
+                name="name"
+                placeholder="jhon doe"
+              />
+            </label>
+            <label className="mb-5 block">
+              <span className="text-gray-700">Email</span>
+              <input
+                {...register('email', { required: true })}
+                className="form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-blue-500 focus:ring"
+                type="email"
+                name="email"
+                placeholder="jhon_doe@maile.com"
+              />
+            </label>
+            <label className="mb-5 block">
+              <span className="text-gray-700">Comment</span>
+              <textarea
+                {...register('comment', { required: true })}
+                placeholder="Say something please ... "
+                rows={8}
+                name="comment"
+                className="form-textarea mt-1 block w-full border py-2 px-3 shadow outline-none ring-blue-500 focus:ring"
+              />
+            </label>
+            <div className="my-2 flex flex-col">
+              {errors.name && (
+                <span className="text-red-500">The name field is required</span>
+              )}
+              {errors.email && (
+                <span className="text-red-500">
+                  The email field is required
+                </span>
+              )}
+              {errors.comment && (
+                <span className="text-red-500">
+                  The comment field is required
+                </span>
+              )}
+            </div>
+            <button
+              type="submit"
+              className="cursor-pointer rounded bg-blue-700 py-2 font-bold text-white shadow outline-none hover:bg-gray-200 hover:text-blue-700"
+            >
+              Submit
+            </button>
+          </form>
+        )}
+        {/*comments part  */}
+        <Comments comments={post.comments} />
       </article>
     </main>
   )
