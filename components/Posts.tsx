@@ -1,6 +1,6 @@
 import React from 'react'
 import { Post } from '../typings'
-import PostComp from './post'
+import PostComp from './Post'
 
 type Props = {
   posts: [Post]
